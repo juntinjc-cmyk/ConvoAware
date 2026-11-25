@@ -1,0 +1,32 @@
+name: ConvoAware
+options:
+  bundleIdPrefix: com.zhengjuanting
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  ConvoAware:
+    type: application
+    platform: iOS
+    sources: [ConvoAware]
+    scheme: {}
+    info:
+      path: ConvoAware/Info.plist
+      properties:
+        CFBundleDisplayName: 對話感知
+        CFBundleShortVersionString: "0.1"
+        CFBundleVersion: "1"
+        NSMicrophoneUsageDescription: 用麥克風偵測周圍是否有人對你說話。聲音只在手機上即時處理，不會錄存也不會上傳。
+        UIBackgroundModes: [audio]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zhengjuanting.convoaware
+        MARKETING_VERSION: "0.1"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: NO
+        CODE_SIGNING_REQUIRED: NO
