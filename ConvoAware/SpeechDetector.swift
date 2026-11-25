@@ -162,19 +162,17 @@ final class SpeechDetector: NSObject, ObservableObject {
 
     /// 把分析視窗設得盡量短，反應才快
     private static func setShortWindow(on request: SNClassifySoundRequest, targetSeconds: Double) {
-        let constraint = request.windowDurationConstraint
-        switch constraint.type {
-        case .enumerated:
-            let options = constraint.enumeratedDurations.map { $0.timeValue }
-            if let best = options.filter({ $0.seconds >= targetSeconds }).min(by: { $0.seconds < $1.seconds })
-                ?? options.max(by: { $0.seconds < $1.seconds }) {
+        switch request.windowDurationConstraint {
+        case .enumeratedDurations(let options):
+            let longEnough: [CMTime] = options.filter { $0.seconds >= targetSeconds }
+            let sorted: [CMTime] = longEnough.sorted { $0.seconds < $1.seconds }
+            if let best = sorted.first ?? options.last {
                 request.windowDuration = best
             }
-        case .range:
-            let range = constraint.durationRange
-            let lo = range.start.seconds
-            let hi = range.end.seconds
-            let chosen = min(max(targetSeconds, lo), hi)
+        case .durationRange(let range):
+            let lo: Double = range.start.seconds
+            let hi: Double = range.end.seconds
+            let chosen: Double = min(max(targetSeconds, lo), hi)
             request.windowDuration = CMTime(seconds: chosen, preferredTimescale: 48_000)
         @unknown default:
             break
